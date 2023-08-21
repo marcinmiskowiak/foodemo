@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodemoPanel - Edit Menu</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon-32x32.png}">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="registration-header">
+        <h2 class="ltext">
+            <a th:href="@{/}">Foodemo</a><span class="panel_link"><a th:href="@{/panel}">Panel</a></span>
+        </h2>
+        <p>Your path to success starts here</p>
+        <h1 class="mt-5" th:text="${restaurantName}">RESTAURANT NAME</h1>
+        <h1 class="mt-5">Menu</h1>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12 mt-3">
+
+            <div class="registration-form" style="max-width: 100%;">
+                <h2 class=" text-center">Add dish</h2>
+                <form th:action="@{'/panel/restaurant/' + ${restaurantId} + '/edit/menu/add'}" th:method="POST"
+                      th:object="${mealDTO}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <select class="form-select" aria-label="Default select example" th:field="*{category}">
+                            <option value="APPETIZER" selected>Appetizer</option>
+                            <option value="SOUP">Soups</option>
+                            <option value="MAIN_COURSE">Main courses</option>
+                            <option value="DESSERT">Desserts</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description </label>
+                        <textarea id="description" class="form-control" rows="3" th:field="*{description}"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text" class="form-control" id="price" placeholder="4.50" th:field="*{price}"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Photo (max 3MB)</label>
+                        <div class="mb-3">
+                            <input class="form-control" type="file" id="formFile" name="image" accept="image/*">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-register bg-primary">Add</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="row mt-5">
+            <h2>All meals</h2>
+            <div class="row mt-3 mb-5">
+                <div class="col-md-2 mt-3" th:each="meal : ${restaurantAllMealDTOs}">
+                    <div class="card bg-dark text-white border-0">
+                        <img th:src="${meal.imageName != null ? '/foodemo/upload_images/' + meal.imageName : '/foodemo/images/no_image.jpg'}"
+                             class="card-img-top" style="height: 130px;" alt="meal">
+
+                        <div class="card-body">
+                            <p class="card-text" th:text="${meal.name}">MEAL NAME</p>
+                            <p class="card-text" style="font-size: 11px;" th:text="${meal.description}">MEAL DESC</p>
+
+                            <span class="badge bg-primary text-dark">
+                                <span th:text="${meal.category}">CATEGORY</span>
+                            </span>
+                            <span class="badge bg-primary text-dark">
+
+                                <span th:text="${meal.price}">PRICE</span>
+                            </span>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row mt-5">
+            <div class="col">
+
+                <a th:href="@{'/panel/restaurant/' + ${restaurantId}}" class="btn btn-dark btn-register">Back to
+                    Restaurant Panel</a>
+            </div>
+
+        </div>
+
+        <div class="row text-center mt-5 mb-3">
+            <div class="col-md-12 ">
+
+                <p>Foodemo!</p>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

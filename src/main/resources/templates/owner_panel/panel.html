@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodemoPanel - Panel</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon-32x32.png}">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="registration-header">
+        <h2 class="ltext">
+            <a th:href="@{/}">Foodemo</a><span class="panel_link"><a th:href="@{/panel}">Panel</a></span>
+        </h2>
+        <p>Your path to success starts here</p>
+
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="restaurant-list">
+                <h2>Hello <span  th:text="${userDTO.getName()}">NAME</span>! </h2>
+                <p>
+                    <span  th:text="${userDTO.getName()}">NAME</span> <span  th:text="${userDTO.getSurname()}">SURNAME</span><br>
+                    <span th:text="${addressDTO.getStreet()}">Street </span> <span th:text="${addressDTO.getBuildingNumber()}">Building Number </span>
+                    <span  th:if="${addressDTO.getApartmentNumber() != ''  && addressDTO.getApartmentNumber() != null}">/</span>
+                    <span th:text="${addressDTO.getApartmentNumber()}">Apartment Number </span><br>
+                    <span th:text="${addressDTO.getPostalCode()}">Postal Code </span> <span th:text="${addressDTO.getCity()}">City </span><br>
+                    <span  th:text="${userDTO.getEmail()}">Email</span><br>
+                    <span  th:text="${userDTO.getPhone()}">PHONE</span><br>
+                </p>
+
+                <a th:href="@{/user/restaurants}" class="btn btn-warning mt-2">Order Now</a>
+                <a th:href="@{/user/profile/edit}" class="btn btn-warning mt-2">Edit Profile</a>
+                <a th:href="@{/logout}" class="btn btn-primary mt-2">Logout</a>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="mt-5 text-center mb-5">Your restaurants:</h1>
+
+
+    <div class="row text-center">
+        <div class="col-md-4"  th:each="restaurant : ${restaurantDTOs}">
+            <div class="restaurant-list">
+                <h2 th:text="${restaurant.name}">RESTAURANT NAME</h2>
+
+                <a th:href="@{'/panel/restaurant/'+${restaurant.restaurantId}}" class="btn btn-primary mt-2">Manage restaurant</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="restaurant-list">
+                <h2>Add new restaurant </h2>
+
+                <a th:href="@{/panel/register_restaurant}" class="btn btn-primary mt-2">Add new restaurant</a>
+            </div>
+        </div>
+
+        <div class="row text-center mt-3 mb-3">
+            <div class="col-md-12 ">
+
+                <p>Foodemo!</p>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

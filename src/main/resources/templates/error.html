@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodemo - Login</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon-32x32.png}">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="registration-header">
+
+        <h2 class="ltext"><a th:href="@{/}">Foodemo</a></h2>
+        <p>Our perfect dishes are waiting for you </p>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col">
+            <div class="registration-form">
+                <h2 class=" text-center">Error</h2>
+
+                <p th:if="${errorMessage}" th:text="${errorMessage}">Error</p>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-5">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+
+            <a th:href="@{/}"  class="btn btn-dark btn-register">Back to Home Page</a>
+        </div>
+
+    </div>
+
+
+    <div class="row text-center mt-3 mb-3">
+        <div class="col-md-12 ">
+
+            <p>Foodemo!</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+INSERT INTO address (country, city, postal_code, street, building_number, apartment_number)
+VALUES ('United States', 'New York', '60-103', 'Pine', '123', NULL),
+       ('Canada', 'Toronto', '50-012', 'Valley', '456', '2'),
+       ('United Kingdom', 'London', '80-012', 'Haven', '789', 'C'),
+       ('Germany', 'Berlin', '10-115', 'Alexanderplatz', '42', '1'),
+       ('France', 'Paris', '75-001', 'Champs-Élysées', '999', 'B'),
+       ('Australia', 'Sydney', '20-000', 'George Street', '654', '3'),
+       ('Spain', 'Madrid', '28-001', 'Gran Vía', '111', NULL),
+       ('Italy', 'Rome', '00-118', 'Via del Corso', '555', '5'),
+       ('Japan', 'Tokyo', '00-004', 'Shibuya', '888', '7'),
+       ('Brazil', 'Rio de Janeiro', '30-060', 'Copacabana', '777', NULL),
+       ('China', 'Beijing', '10-006', 'Wangfujing', '123', 'A'),
+       ('Russia', 'Moscow', '10-000', 'Tverskaya', '456', '9'),
+       ('South Korea', 'Seoul', '04-533', 'Myeongdong', '789', 'C'),
+       ('Mexico', 'Mexico City', '06-000', 'Paseo de la Reforma', '101', '2');

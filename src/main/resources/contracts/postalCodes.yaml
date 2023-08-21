@@ -1,0 +1,310 @@
+openapi: 3.0.0
+info:
+  title: Polish zip codes
+  version: '1.1'
+  description: Polish zip codes information.
+  contact:
+    email: info@intami.pl
+externalDocs:
+  description: API home page
+  url: "http://kodpocztowy.intami.pl"
+servers:
+  - url: 'http://kodpocztowy.intami.pl'
+  - url: 'http://localhost:8080'
+paths:
+  '/{zipCode}':
+    parameters:
+      - name: zipCode
+        in: path
+        description: A requested zip code
+        required: true
+        schema:
+          type: string
+          pattern: "^\\d{2}-\\d{3}$"
+          example: 01-123
+      - $ref: "#/components/parameters/Accept"
+      - $ref: "#/components/parameters/X-TraceId"
+    get:
+      operationId: zip-code-info
+      summary: Find zip code info
+      description: Return zip code information, that is a list of zip code entries
+      responses:
+        '200':
+          description: List of zip code entries or empty list when zip code was not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ZipCodeEntry'
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '400':
+          description: When path param zipCode is missing or incorrect
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '404':
+          description: When zip code does not exists
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '429':
+          description: In case of overlimit api call
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+
+  '/city/{city}':
+    parameters:
+      - name: city
+        in: path
+        required: true
+        schema:
+          type: string
+          example: Wrocław
+      - $ref: "#/components/parameters/Accept"
+      - $ref: "#/components/parameters/X-TraceId"
+    get:
+      operationId: find-zip-codes-by-city
+      summary: Find all zip codes by city
+      description: Return all zip codes that belong to this city. If there is more then one city with that name, all zip codes are returned.
+      responses:
+        '200':
+          description: List of zip codes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfZipCodes'
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '400':
+          description: When path param city is missing or incorrect
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '404':
+          description: When there is no results
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '429':
+          description: In case of overlimit api call
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+
+
+  '/city/{city}/street/{street}':
+    parameters:
+      - name: city
+        in: path
+        required: true
+        schema:
+          type: string
+          example: Wrocław
+      -  name: street
+         in: path
+         required: true
+         schema:
+           type: string
+           example: "Komuny paryskiej"
+      - $ref: "#/components/parameters/Accept"
+      - $ref: "#/components/parameters/X-TraceId"
+    get:
+      operationId: find-zip-codes-by-city-and-street
+      summary: Find all zip codes by city and street
+      description: Return all zip codes by street name in the city.
+      responses:
+        '200':
+          description: List of zip codes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfZipCodes'
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '400':
+          description: When path param city or street is missing or incorrect
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '404':
+          description: When there is no results
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '429':
+          description: In case of overlimit api call
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+
+  '/city/{city}/district/{district}':
+    parameters:
+      - name: city
+        in: path
+        required: true
+        schema:
+          type: string
+          example: Wrocław
+      -  name: district
+         in: path
+         required: true
+         schema:
+           type: string
+           example: "Oporów"
+      - $ref: "#/components/parameters/Accept"
+      - $ref: "#/components/parameters/X-TraceId"
+    get:
+      operationId: find-zip-codes-by-city-and-district
+      summary: Find all zip codes by city and district
+      description: Return all zip codes located in city's district
+      responses:
+        '200':
+          description: List of zip codes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfZipCodes'
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '400':
+          description: When path param city or district is missing or incorrect
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '404':
+          description: When there is no results
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+        '429':
+          description: In case of overlimit api call
+          headers:
+            "X-TraceId":
+              $ref: "#/components/headers/X-TraceId"
+
+
+components:
+  schemas:
+    ZipCodeEntry:
+      title: Zip Code Information
+      type: object
+      description: Zip code detailed information
+      x-examples:
+        example:
+          kod: 01-123
+          miejscowosc: Warszawa
+          ulica: Elekcyjna
+          gmina: Warszawa
+          powiat: Warszawa
+          wojewodztwo: mazowieckie
+          dzielnica: Wola
+          numeracja:
+            - od: '23'
+              do: '33'
+              parzystosc: NIEPARZYSTE
+      properties:
+        kod:
+          type: string
+          description: zip code
+        nazwa:
+          type: string
+          description: name of an institution if zip code is assigned to a specific institution
+        miejscowosc:
+          type: string
+          description: town
+        ulica:
+          type: string
+          description: street
+        numer:
+          type: string
+          description: street number if only one number is assigned to this zip code
+        gmina:
+          type: string
+          description: borough
+        powiat:
+          type: string
+          description:  township / district
+        wojewodztwo:
+          type: string
+          description: voivodeship
+        dzielnica:
+          type: string
+          description: district
+        numeracja:
+          type: array
+          description: numeration schema
+          items:
+            $ref: '#/components/schemas/ZipCodeEntryNum'
+      required:
+        - kod
+    ZipCodeEntryNum:
+      title: Zip Code Numeration Entry
+      type: object
+      x-examples:
+        num-example:
+          od: '23'
+          do: '33'
+          parzystosc: NIEPARZYSTE
+      properties:
+        od:
+          type: string
+          description: numeration from
+        do:
+          type: string
+          description: numeration to
+        parzystosc:
+          type: string
+          description: even partity, where "PARZYSTE" = even and "NIEPARZYSTE" = odd
+          enum:
+            - PARZYSTE
+            - NIEPARZYSTE
+      required:
+        - od
+        - do
+    ListOfZipCodes:
+      title: Array Of Zip Codes
+      type: array
+      items:
+        description: zip code item
+        type: string
+        example: "80-213"
+      x-examples:
+        short-list-example:
+          [ "01-192", "01-210" ]
+
+  parameters:
+    X-TraceId:
+      name: X-TraceId
+      required: false
+      in: header
+      description: A traceId that is copied to API response header
+      schema:
+        type: string
+        example: "optional_abc123"
+    Accept:
+      name: Accept
+      required: true
+      in: header
+      description: Requested content type
+      schema:
+        type: string
+        enum:
+          - "application/json"
+          - "application/xml"
+          - "plain/text"
+        example: "application/json"
+
+  headers:
+    X-TraceId:
+      required: false
+      schema:
+        type: string
+        example: "abc123"
+      description: if request contains X-TraceId header the value will be copied here

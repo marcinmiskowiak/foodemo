@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodemo - Order Details</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon-32x32.png}">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="registration-header">
+
+        <h2 class="ltext"><a th:href="@{/}">Foodemo</a></h2>
+        <p>Our perfect dishes are waiting for you </p>
+    </div>
+
+
+    <div class="row text-center">
+        <div class="col"></div>
+        <div class="col-md-8">
+            <div class="restaurant-list">
+                <h2>Your order details</h2>
+
+
+
+                <table class="table table-hover table-dark mt-4">
+                    <thead>
+                    <th>#</th>
+                    <th>Meal name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total price</th>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="element : ${selectedMeals}">
+                        <th>1</th>
+                        <td th:text="${element.key.name}">MEAL NAME</td>
+                        <td  th:text="${element.key.price}">PRICE</td>
+                        <td th:text="${element.value}">QUANTITY</td>
+                        <td th:text="${element.key.price.multiply(element.value)}">TOTAL PRICE</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+
+
+    <div class="row text-center">
+        <div class="col"></div>
+        <div class="col-md-8">
+            <div class="restaurant-list">
+                <h2>Your delivery details</h2>
+
+                <p>
+                    <span th:text="${userDetails.name}">NAME</span> <span th:text="${userDetails.surname}">SURNAME</span><br>
+                    <span th:text="${userAddressDTO.street}">STREET</span>
+                    <span th:text="${userAddressDTO.buildingNumber}">BUILDING NUMBER</span>
+                    <span th:if="${userAddressDTO.apartmentNumber != '' && userAddressDTO.apartmentNumber != null }">/</span>
+                    <span th:text="${userAddressDTO.apartmentNumber}">APARTMENT NUMBER</span><br>
+                    <span th:text="${userAddressDTO.postalCode}">POSTAL CODE</span>
+                    <span th:text="${userAddressDTO.city}">CITY</span> <br>
+                    <span th:text="${userDetails.phone}">PHONE</span>
+
+
+
+                </p>
+
+
+                <a th:href="@{/user/profile/edit}" class="btn btn-dark text-white btn-sm">Edit</a>
+
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col"></div>
+        <div class="col-md-8">
+            <div class="restaurant-list">
+                <h2>Total price is $<span th:text="${totalAmount}">TOTAL AMOUNT</span></h2>
+
+                <form th:action="@{'/user/order/confirm/' + ${orderId}}" th:method="PATCH">
+                    <input type="submit"  class="btn mt-3 btn-register bg-warning" value="Confirm order"/>
+                </form>
+
+
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+
+
+
+    <div class="row mt-5">
+        <div class="col-md-2"></div>
+        <div class="col">
+
+            <a th:href="@{/user/restaurants}" class="btn btn-dark btn-register">Back to Restaurants List</a>
+        </div>
+
+        <div class="col-md-2"></div>
+    </div>
+
+
+    <div class="row text-center mt-3 mb-3">
+        <div class="col-md-12 ">
+
+            <p>Foodemo!</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

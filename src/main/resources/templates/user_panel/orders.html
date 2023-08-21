@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodemo - Orders</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon-32x32.png}">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="registration-header">
+
+        <h2 class="ltext"><a th:href="@{/}">Foodemo</a></h2>
+        <p>Our perfect dishes are waiting for you </p>
+
+        <h1 class="mt-5"
+            th:text="${orderWithDetailsDTOs.size() > 0} ? 'Your orders:' : 'You have no orders'"></h1>
+
+        <a th:if="${orderWithDetailsDTOs.size() == 0}" th:href="@{/user/restaurants}"
+           class="btn btn-lg order-now-btn mt-3 btn-register">Order Now</a>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-6" th:each="order : ${orderWithDetailsDTOs}">
+            <div class="restaurant-list">
+                <h2>Order </h2>
+                <span style="font-size: 15px;">
+                      #<span th:text="${order.order.orderNumber}">ORDER NUMBER</span>
+                </span>
+                <br>
+                <div>
+                    <span>
+                        <span th:if="${'init'.equals(order.order.status.toString())}" class="badge bg-danger">
+                            WAITING FOR YOUR CONFIRMATION
+                        </span>
+                    </span>
+                    <span >
+                        <span th:unless="${'init'.equals(order.order.status.toString())}" class="badge bg-success"
+                              th:text="${order.order.status.toString().toUpperCase()}">ORDER STATUS</span>
+                    </span>
+
+                </div>
+                <table class="table table-hover table-dark mt-4">
+                    <thead>
+                    <th>Meal name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total price</th>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="mealOrder : ${order.order.mealOrders}">
+                        <td th:text="${mealOrder.meal.name}">MEAL NAME</td>
+                        <td th:text="${mealOrder.price}">MEAL PRICE</td>
+                        <td th:text="${mealOrder.quantity}">MEAL QUANTITY</td>
+                        <td th:text="${mealOrder.price.multiply(mealOrder.quantity)}">MEAL TOTAL PRICE</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <p>
+
+                    <span class="badge bg-warning text-dark">Restaurant:
+
+                      <span th:text="${order.order.restaurant.name}"></span>
+
+
+                    </span>
+
+                    <span th:if="${order.order.completedDateTime}" class="badge bg-warning text-dark">Completed:
+
+                      <span th:text="${#temporals.format(order.order.completedDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+
+
+                    </span>
+
+                    <span class="badge bg-warning text-dark">Received:
+
+                        <span th:text="${#temporals.format(order.order.receivedDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+
+
+                    </span>
+
+
+                    <span class="badge bg-warning text-dark">
+                        Total price:  <span th:text="${order.totalPrice}">TOTAL PRICE</span>
+                    </span>
+
+                </p>
+
+                <form class="mb-1" th:if="${'init'.equals(order.order.status.toString())}"
+                      th:action="@{'/user/order/confirm/' + ${order.order.orderId}}" th:method="PATCH">
+                    <button type="submit" class="btn btn-success">Confirm order</button>
+                </form>
+
+                <form class="mb-1"
+                      th:if="${(order.canBeCancelled || order.order.status.toString().equals('init')) && !order.order.status.toString().equals('completed')}"
+                      th:action="@{'/user/order/delete/' + ${order.order.orderId}}" th:method="DELETE">
+                    <button type="submit" class="btn btn-danger">Cancel order</button>
+                </form>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="row mt-5" th:if="${orderWithDetailsDTOs.size() > 0}">
+        <div class="col">
+
+            <a th:href="@{/user/restaurants}" class="btn btn-dark btn-register">Back to Restaurants List</a>
+        </div>
+
+    </div>
+
+    <div class="row text-center mt-3 mb-3">
+        <div class="col-md-12 ">
+
+            <p>Foodemo!</p>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
